@@ -146,19 +146,35 @@ public void salvarItem() {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
+
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
         
+        
+         // Verifica se os campos estão preenchidos
+    if (nome.isEmpty() || valor.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.");
+        return; // Interrompe a execução se algum campo estiver vazio
+    }
+    
+    try {
+        int valorInt = Integer.parseInt(valor); // Verifica se o valor é um número válido
+
+        ProdutosDTO produto = new ProdutosDTO();
+        produto.setNome(nome);
+        produto.setValor(valorInt);
+        produto.setStatus("A Venda");
+
         ProdutosDAO produtodao = new ProdutosDAO();
         produtodao.cadastrarProduto(produto);
         
-    salvarItem();    
-        
+        salvarItem();
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "O valor deve ser um número inteiro.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao realizar cadastro.");
+    
+    }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
