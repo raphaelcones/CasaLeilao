@@ -12,13 +12,9 @@ import javax.swing.JOptionPane;
  */
 public class cadastroVIEW extends javax.swing.JFrame {
 
-    /**
-     * Creates new form cadastroVIEW
-     */
-    public cadastroVIEW() {
-        initComponents();
-    }
-public void salvarItem() {
+    private final ProdutosDAO produtodao;
+    
+    public void salvarItem() {
     try {
         // código para salvar item no banco de dados
         JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
@@ -26,7 +22,14 @@ public void salvarItem() {
         JOptionPane.showMessageDialog(this, "Erro ao realizar cadastro.");
     }
 }
-
+    
+   public cadastroVIEW() {
+        initComponents();
+        setLocationRelativeTo(null);
+        produtodao = new ProdutosDAO(); // Inicializa a instância de ProdutosDAO
+    }
+   
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -146,35 +149,35 @@ public void salvarItem() {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+    String nome = cadastroNome.getText();
+    String valorStr = cadastroValor.getText();
 
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        
-        
-         // Verifica se os campos estão preenchidos
-    if (nome.isEmpty() || valor.isEmpty()) {
+    // Verifica se os campos estão preenchidos
+    if (nome.isEmpty() || valorStr.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.");
         return; // Interrompe a execução se algum campo estiver vazio
     }
-    
+
     try {
-        int valorInt = Integer.parseInt(valor); // Verifica se o valor é um número válido
+        double valor = Double.parseDouble(valorStr); // Converte para double
 
-        ProdutosDTO produto = new ProdutosDTO();
-        produto.setNome(nome);
-        produto.setValor(valorInt);
-        produto.setStatus("A Venda");
-
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+        // Aqui estou passando null para o ID porque presumo que seja gerado automaticamente no banco de dados
+        ProdutosDTO produto = new ProdutosDTO(null, nome, valor, "A Venda");
         
+        produtodao.cadastrarProduto(produto); // Utiliza a instância existente de ProdutosDAO
+
         salvarItem();
+        
+        // Limpa os campos após o cadastro bem-sucedido
+        cadastroNome.setText("");
+        cadastroValor.setText("");
+
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "O valor deve ser um número inteiro.");
+        JOptionPane.showMessageDialog(this, "O valor deve ser um número válido.");
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erro ao realizar cadastro.");
-    
     }
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed

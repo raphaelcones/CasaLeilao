@@ -1,18 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
-
-import java.sql.PreparedStatement;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 
 public class ProdutosDAO {
@@ -23,20 +14,58 @@ public class ProdutosDAO {
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
     public void cadastrarProduto (ProdutosDTO produto){
+     conn = new conectaDAO().connectDB();
         
+        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
         
-        //conn = new conectaDAO().connectDB();
-        
-        
+        try {
+            prep = conn.prepareStatement(sql);
+            prep.setString(1, produto.getNome());
+            prep.setDouble(2, produto.getValor());
+            prep.setString(3, produto.getStatus());
+            prep.execute();
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + e.getMessage());
+        } finally {
+            try {
+                prep.close();
+                conn.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
+            }
+        }   
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
+    conn = new conectaDAO().connectDB();
+        String sql = "SELECT * FROM produtos";
         
+        try {
+            prep = conn.prepareStatement(sql);
+            resultset = prep.executeQuery();
+            
+            while (resultset.next()) {
+                int id = resultset.getInt("id");
+                String nome = resultset.getString("nome");
+                double valor = resultset.getDouble("valor");
+                String status = resultset.getString("status");
+                
+                ProdutosDTO produto = new ProdutosDTO(id, nome, valor, status);
+                listagem.add(produto);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar produtos: " + e.getMessage());
+        } finally {
+            try {
+                resultset.close();
+                prep.close();
+                conn.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
+            }
+        }    
         return listagem;
-    }
-    
-    
-    
-        
+    }    
 }
 
