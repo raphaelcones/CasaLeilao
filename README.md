@@ -4,3 +4,8 @@ echo "Este projeto é um sistema informatizado para gerenciar leilões." >> READ
 echo "## Tecnologias Utilizadas" >> README.md
 echo "- Java" >> README.md
 echo "- MySQL" >> README.md
+# Sistema de Leilões
+Este projeto é um sistema informatizado para gerenciar leilões.
+## Tecnologias Utilizadas
+- Java
+- MySQL
