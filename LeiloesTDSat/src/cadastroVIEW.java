@@ -1,22 +1,11 @@
-
 import javax.swing.JOptionPane;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
 public class cadastroVIEW extends javax.swing.JFrame {
 
     private final ProdutosDAO produtodao;
     
     public void salvarItem() {
     try {
-        // código para salvar item no banco de dados
         JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erro ao realizar cadastro.");
@@ -34,6 +23,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jProgressBar1 = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -57,12 +47,6 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Valor:");
-
-        cadastroNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastroNomeActionPerformed(evt);
-            }
-        });
 
         btnCadastrar.setBackground(new java.awt.Color(153, 255, 255));
         btnCadastrar.setText("Cadastrar");
@@ -143,32 +127,23 @@ public class cadastroVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cadastroNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNomeActionPerformed
-        
-        
-    }//GEN-LAST:event_cadastroNomeActionPerformed
-
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
     String nome = cadastroNome.getText();
     String valorStr = cadastroValor.getText();
 
-    // Verifica se os campos estão preenchidos
     if (nome.isEmpty() || valorStr.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.");
-        return; // Interrompe a execução se algum campo estiver vazio
+        return; 
     }
 
     try {
-        double valor = Double.parseDouble(valorStr); // Converte para double
-
-        // Aqui estou passando null para o ID porque presumo que seja gerado automaticamente no banco de dados
+        double valor = Double.parseDouble(valorStr); 
         ProdutosDTO produto = new ProdutosDTO(null, nome, valor, "A Venda");
         
         produtodao.cadastrarProduto(produto); // Utiliza a instância existente de ProdutosDAO
 
         salvarItem();
-        
-        // Limpa os campos após o cadastro bem-sucedido
+    
         cadastroNome.setText("");
         cadastroValor.setText("");
 
@@ -185,7 +160,6 @@ public class cadastroVIEW extends javax.swing.JFrame {
         listagem.setVisible(true);
     }//GEN-LAST:event_btnProdutosActionPerformed
     public static void main(String[] args) {
-    // Cria e exibe a tela de cadastroVIEW
     java.awt.EventQueue.invokeLater(new Runnable() {
       @Override
       public void run() {
@@ -203,6 +177,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
